@@ -18,9 +18,14 @@ jobs:
       - name: Build Docker image
         run: docker build -t playwright-tests:${{ github.sha }} .
 
+      - name: Create output directories
+        run: |
+          mkdir -p playwright-report
+          mkdir -p test-results
+
       - name: Run tests in Docker container
         run: |
-          docker run --name test-container \
+          docker run --rm \
             -v ${{ github.workspace }}/playwright-report:/saucedemo-testautomation/playwright-report \
             -v ${{ github.workspace }}/test-results:/saucedemo-testautomation/test-results \
             playwright-tests:${{ github.sha }}
