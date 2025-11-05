@@ -3,4 +3,9 @@ dist
 .git
 .github
 .vscode
-.test-results
+.idea
+test-results
+playwright-report
+*.log
+.DS_Store
+README.md

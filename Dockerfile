@@ -18,6 +18,6 @@ RUN npm run build
 # Run Playwright install (to ensure browsers are installed)
 RUN npx playwright install --with-deps
 
-# Default command to run tests
-CMD ["npx", "playwright", "test", "--reporter=line"]
+# Default command to run tests with HTML report
+CMD ["npx", "playwright", "test", "--reporter=html,line"]
 

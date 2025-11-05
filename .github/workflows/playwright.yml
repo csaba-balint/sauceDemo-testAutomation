@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: Run Tests Directly
     runs-on: ubuntu-latest
 
     steps:
@@ -26,11 +27,46 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run tests
-        run: npx playwright test --reporter=dot
+        run: npx playwright test --reporter=line
 
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-direct
           path: playwright-report/
+          retention-days: 30
+
+  test-docker:
+    name: Run Tests in Docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t playwright-tests:${{ github.sha }} .
+
+      - name: Run tests in Docker container
+        run: |
+          docker run --name test-container \
+            -v ${{ github.workspace }}/playwright-report:/saucedemo-testautomation/playwright-report \
+            -v ${{ github.workspace }}/test-results:/saucedemo-testautomation/test-results \
+            playwright-tests:${{ github.sha }}
+
+      - name: Upload Playwright HTML report from Docker
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-docker
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload test results from Docker
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-docker
+          path: test-results/
+          retention-days: 30
