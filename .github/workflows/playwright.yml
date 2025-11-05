@@ -38,10 +38,11 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: Upload test results
+      - name: Upload test results (screenshots, videos, traces)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: test-results/
           retention-days: 30
+          if-no-files-found: ignore
