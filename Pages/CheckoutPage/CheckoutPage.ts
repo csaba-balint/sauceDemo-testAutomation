@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { CartPage } from "../CartPage";
+import { CartPage } from "../CartPage/CartPage";
 
 export class CheckoutPage extends CartPage {
     // Checkout
@@ -18,6 +18,9 @@ export class CheckoutPage extends CartPage {
     summaryTax: Locator;
     summaryTotal: Locator;
 
+    // Error message
+    errorMessage: Locator;
+
     // URL
     checkoutStepOneUrl: RegExp = /\/checkout-step-one\.html/;
     checkoutStepTwoUrl: RegExp = /\/checkout-step-two\.html/;
@@ -26,7 +29,7 @@ export class CheckoutPage extends CartPage {
     // Strings
     completeHeaderText: string = 'Thank you for your order!';
     completeMessageText: string = 'Your order has been dispatched, and will arrive just as fast as the pony can get there!';
-
+    errorMessageText: string = 'Error: First Name is required';
 
     constructor(protected readonly page: Page) {
         super(page);
@@ -48,6 +51,9 @@ export class CheckoutPage extends CartPage {
         this.completeHeader = page.locator('[data-test="complete-header"]');
         this.completeMessage = page.locator('[data-test="complete-text"]');
         this.backHomeButton = page.locator('[data-test="back-to-products"]');
+
+        // Error message
+        this.errorMessage = page.locator('[data-test="error"]');
     }
 
     async goToCheckout() {
@@ -61,7 +67,14 @@ export class CheckoutPage extends CartPage {
         await this.lastName.fill(lastName);
         await this.postalCode.fill(postalCode);
         await this.continueButton.click();
-        await expect(this.page).toHaveURL(this.checkoutStepTwoUrl);
+        await this.page.waitForLoadState('networkidle');
+        if (firstName === '' || lastName === '' || postalCode === '') {
+            await expect(this.errorMessage).toBeVisible();
+            await expect(this.errorMessage).toHaveText(this.errorMessageText);
+        }
+        else {
+            await expect(this.page).toHaveURL(this.checkoutStepTwoUrl);
+        }
     }
 
     async completeOrder() {

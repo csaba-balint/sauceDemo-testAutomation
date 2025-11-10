@@ -28,6 +28,21 @@ test('Place an order @smoke @regression', async ({ productsPage, cartPage, check
     await checkoutPage.completeOrder();
 });
 
+test('Place an order without filling out the checkout form @smoke @regression', async ({ productsPage, cartPage, checkoutPage }) => {
+    const products = [
+        'Sauce Labs Backpack', 
+        'Sauce Labs Bike Light',
+        'Sauce Labs Bolt T-Shirt',
+        'Sauce Labs Fleece Jacket',
+        'Sauce Labs Onesie',
+    ];
+    await productsPage.addProductsToCart(products);
+    await cartPage.goToCart();
+    await cartPage.validateCartItems(products);
+    await checkoutPage.goToCheckout();
+    await checkoutPage.submitCheckoutForm('', '', '');
+});
+
 test('Check order total price @smoke @regression', async ({ productsPage, cartPage, checkoutPage }) => {
     const products = [
         'Sauce Labs Backpack', 

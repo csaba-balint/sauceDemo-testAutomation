@@ -1,8 +1,8 @@
 import { test as baseTest } from '@playwright/test';
-import { LoginPage } from './Pages/Login/LoginPage';
-import { ProductsPage } from './Pages/Login/ProductsPage.ts/ProductsPage';
-import { CartPage } from './Pages/Login/ProductsPage.ts/CartPage.ts/CartPage';
-import { CheckoutPage } from './Pages/Login/ProductsPage.ts/CartPage.ts/CheckoutPage/CheckoutPage';
+import { LoginPage } from './Pages/LoginPage/LoginPage';
+import { ProductsPage } from './Pages/ProductsPage.ts/ProductsPage';
+import { CartPage } from './Pages/CartPage/CartPage';
+import { CheckoutPage } from './Pages/CheckoutPage/CheckoutPage';
 
 type Fixtures = {
     loginPage: LoginPage;
