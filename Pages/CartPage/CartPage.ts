@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { ProductsPage } from "../ProductsPage.ts/ProductsPage";
+import { ProductsPage } from "../ProductsPage/ProductsPage";
 
 export class CartPage extends ProductsPage {
 

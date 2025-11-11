@@ -9,7 +9,7 @@
       "resolveJsonModule": true,
       "types": ["node"]
     },
-    "include": ["**/*.ts", "Pages/CartPage"],
+    "include": ["**/*.ts", "Pages/CartPage", "Pages/ProductsPage"],
     "exclude": ["node_modules", "dist", "playwright-report", "test-results"]
 }
   
